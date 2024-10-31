@@ -832,6 +832,7 @@ def get_total_rushing_yards():
         return result['Total_Yards'][0]
     else:
         return 0
+        
 
 # Callback para actualizar el gráfico de globo terráqueo y la tabla de trayectorias
 @app.callback(
