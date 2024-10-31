@@ -589,7 +589,7 @@ def update_bar_charts(selected_year):
 def update_year_filter_options_top(selected_type):
     if selected_type == 'passing':
         df = get_data(query_passing_top)
-    elif selected_type == 'rushing':
+    elif selected_type == 'rushing': 
         df = get_data(query_rushing_top)
     else:
         df = get_data(query_receiving_top)
