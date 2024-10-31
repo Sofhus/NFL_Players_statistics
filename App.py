@@ -337,157 +337,144 @@ app._favicon = 'nfl_logo.ico'
 
 # Layout del dashboard
 app.layout = html.Div([
-    html.H1("Estadísticas de la NFL", id='Title'),
+    # Margen lado izquierdo
+    html.Div(style={'backgroundColor': '#013369', 'width': '5%', 'height': '100vh', 'position': 'fixed', 'left': 0}),
     
-    # Muestra las gráficas de barras de las proporciones de las posiciones en las estadísticas
+    # Contenido principal con margen izquierdo y derecho
     html.Div([
-        dcc.Dropdown(
-        id='year-bar-chart',
-        placeholder='Filtrar por año'
-        ),
-
-    ], style={'display': 'flex', 'justify-content': 'flex-end', 'gap': '10px', 'padding': '20px'}),
-    
-    html.Div([
-        html.Div(dcc.Graph(id='passing-bar-chart'), style={'width': '33%', 'padding': '10px'}),
-        html.Div(dcc.Graph(id='rushing-bar-chart'), style={'width': '33%', 'padding': '10px'}),
-        html.Div(dcc.Graph(id='receiving-bar-chart'), style={'width': '33%', 'padding': '10px'}),
-    ], id='graph'),
-
-    # Muestra la tabla del top 10 de jugadores por estadística
-    html.H1("Top 10 Jugadores Por Estadística", style={'text-align': 'center'}),
-    html.Div([
-        dcc.Dropdown(
-        id='stat-type-top',
-        options=[
-            {'label': 'Passing', 'value': 'passing'},
-            {'label': 'Rushing', 'value': 'rushing'},
-            {'label': 'Receiving', 'value': 'receiving'}
-        ],
-        value='passing'
-        ),
-        dcc.Dropdown(
-            id='year-filter-top',
-            placeholder='Select a Year'
-        ),
-    ]),
-    # Contenedor para la tabla y la gráfica, colocados en la misma línea
-    html.Div([
-    
-    # Columna de la tabla del top 10
-    html.Div([
-        dash_table.DataTable(
-            id='top-10-table',
-            columns=[
-                {"name": "Team", "id": "Team"},
-                {"name": "Position", "id": "Position"},
-                {"name": "Name", "id": "Name"},
-                {"name": "Total Yards", "id": "Total_Yards"},
-                {"name": "Total Touchdowns", "id": "Total_Touchdowns"}
-            ],
-            data=[],
-            row_selectable='single',
-            selected_rows=[],
-            style_table={'overflowX': 'auto', 'height': '400px'},  # Limitar la altura de la tabla
-            style_cell={
-                'textAlign': 'center',
-                'whiteSpace': 'normal',
-            },
-            page_size=10
-        ),
-    ], style={'width': '45%', 'display': 'inline-block', 'padding': '10px', 'vertical-align': 'top'}),
-    
-    # Columna para la gráfica de trayectoria del jugador seleccionado
-    html.Div([
-        html.Div(id='player-detail'),
-    ], id='chart-eficency')
-
-], style={'display': 'flex', 'justify-content': 'space-around'}),
-
-    html.H1("Mapa de campeonatos ganados por estado"),
-    html.Div([
+        # Título con logo
         html.Div([
-            dcc.Graph(id='heatmap-states'),
-        ], id='map'),
+            # Logo a la izquierda del título
+            html.Img(
+                src='assets/nfl_logo.ico',  
+                style={
+                    'height': '80px', 
+                    'margin-right': '20px'
+                }
+            ),
+            html.H1(
+                "Estadísticas de la NFL",
+                id='Title',
+                style={
+                    'display': 'inline-block',
+                    'fontSize': '3em',
+                    'fontWeight': 'bold',
+                    'color': '#013369',  
+                    'margin': 0,
+                    'verticalAlign': 'middle'
+                }
+            )
+        ], style={'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center', 'padding': '20px'}),
+        
+        # Muestra las gráficas de barras de las proporciones de las posiciones en las estadísticas
+        html.Div([
+            dcc.Dropdown(
+                id='year-bar-chart',
+                placeholder='Filtrar por año'
+            ),
+        ], style={'display': 'flex', 'justify-content': 'flex-end', 'gap': '10px', 'padding': '20px'}),
         
         html.Div([
-            dash_table.DataTable(
-                id='state-table-titles',
-                columns=[
-                    {"name": "Inicial del Estado", "id": "Estado"},
-                    {"name": "Nombre Completo", "id": "Nombre Completo"}
+            html.Div(dcc.Graph(id='passing-bar-chart'), style={'width': '33%', 'padding': '10px'}),
+            html.Div(dcc.Graph(id='rushing-bar-chart'), style={'width': '33%', 'padding': '10px'}),
+            html.Div(dcc.Graph(id='receiving-bar-chart'), style={'width': '33%', 'padding': '10px'}),
+        ], id='graph'),
+
+        # Muestra la tabla del top 10 de jugadores por estadística
+        html.H1("Top 10 Jugadores Por Estadística", style={'text-align': 'center'}),
+        html.Div([
+            dcc.Dropdown(
+                id='stat-type-top',
+                options=[
+                    {'label': 'Passing', 'value': 'passing'},
+                    {'label': 'Rushing', 'value': 'rushing'},
+                    {'label': 'Receiving', 'value': 'receiving'}
                 ],
-                data=[],
-                row_selectable='single',  # Permitir seleccionar una fila
-                selected_rows=[],  # Para manejar las filas seleccionadas
-                style_table={'overflowX': 'auto', 'height': '350px', 'overflowY': 'auto'},
-                style_cell={'textAlign': 'center'},
+                value='passing'
             ),
-            html.Div(id='team-detail-champ', style={'padding-top': '20px'}),
-        ], id='table-map-titles'),
-    ], id='content-map'),
-
-
-    html.H1("Mapa de subcampeonatos por estado"),
-    html.Div([
-        html.Div([
-            dcc.Graph(id='heatmap-subtitles'),
-        ], id='map-subtitles'),
+            dcc.Dropdown(
+                id='year-filter-top',
+                placeholder='Select a Year'
+            ),
+        ]),
         
+        # Contenedor para la tabla y la gráfica, colocados en la misma línea
         html.Div([
-            dash_table.DataTable(
-            id='state-table-subtitles',
-            columns=[
-                {"name": "Inicial del Estado", "id": "Estado"},
-                {"name": "Nombre Completo", "id": "Nombre Completo"},
-            ],
-            data=[],
-            row_selectable='single',  # Permitir seleccionar una fila
-            selected_rows=[],  # Para manejar las filas seleccionadas
-            style_table={'overflowX': 'auto', 'height': '350px', 'overflowY': 'auto'},
-            style_cell={'textAlign': 'center'},
-            ),
-            html.Div(id='team-detail', style={'padding-top': '20px'}),
-        ], id='table-map-subtitles'),
-    ], id='content-map-subtitles'),
+            # Columna de la tabla del top 10
+            html.Div([
+                dash_table.DataTable(
+                    id='top-10-table',
+                    columns=[
+                        {"name": "Team", "id": "Team"},
+                        {"name": "Position", "id": "Position"},
+                        {"name": "Name", "id": "Name"},
+                        {"name": "Total Yards", "id": "Total_Yards"},
+                        {"name": "Total Touchdowns", "id": "Total_Touchdowns"}
+                    ],
+                    data=[],
+                    row_selectable='single',
+                    selected_rows=[],
+                    style_table={'overflowX': 'auto', 'height': '400px'},  # Limitar la altura de la tabla
+                    style_cell={
+                        'textAlign': 'center',
+                        'whiteSpace': 'normal',
+                    },
+                    page_size=10
+                ),
+            ], style={'width': '45%', 'display': 'inline-block', 'padding': '10px', 'vertical-align': 'top'}),
+            
+            # Columna para la gráfica de trayectoria del jugador seleccionado
+            html.Div([
+                html.Div(id='player-detail'),
+            ], id='chart-eficency')
+        ], style={'display': 'flex', 'justify-content': 'space-around'}),
 
-    # Mostrar tabla de eficiencia
-    html.H1("Juagdores Más Eficientes Por Estadística"),
-    html.Div([
-        dcc.Dropdown(
-        id='stat-type-efficiency',
-        options=[
-            {'label': 'Passing', 'value': 'passing'},
-            {'label': 'Rushing', 'value': 'rushing'},
-            {'label': 'Receiving', 'value': 'receiving'}
-        ],
-        value='passing'
-        ),
-        dcc.Dropdown(
-            id='year-filter-efficiency',
-            placeholder='Select a Year',
-        ),
-    ]),
+        html.H1("Mapa de campeonatos ganados por estado"),
+        html.Div([
+            html.Div([
+                dcc.Graph(id='heatmap-states'),
+            ], id='map'),
+            
+            html.Div([
+                dash_table.DataTable(
+                    id='state-table-titles',
+                    columns=[
+                        {"name": "Inicial del Estado", "id": "Estado"},
+                        {"name": "Nombre Completo", "id": "Nombre Completo"}
+                    ],
+                    data=[],
+                    row_selectable='single',  # Permitir seleccionar una fila
+                    selected_rows=[],  # Para manejar las filas seleccionadas
+                    style_table={'overflowX': 'auto', 'height': '350px', 'overflowY': 'auto'},
+                    style_cell={'textAlign': 'center'},
+                ),
+                html.Div(id='team-detail-champ', style={'padding-top': '20px'}),
+            ], id='table-map-titles'),
+        ], id='content-map'),
 
-    dash_table.DataTable(
-        id='top-10-table-efficiency',
-        columns=[
-            {"name": "Name", "id": "Name"},
-            {"name": "Team", "id": "Team"},
-            {"name": "ATT", "id": "ATT"},
-            {"name": "Touchdowns", "id": "Touchdowns"},
-            {"name": "Attempts Per TD", "id": "Attempts_Per_TD"}
-        ],
-        data=[],
-        style_table={'overflowX': 'auto', 'padding-bottom': '25px'},
-        style_cell={
-            'textAlign': 'center',
-            'padding-bottom': '5px',
-            'whiteSpace': 'normal',
-        },
-        page_size=10
-    ),
-    
+        html.H1("Mapa de subcampeonatos por estado"),
+        html.Div([
+            html.Div([
+                dcc.Graph(id='heatmap-subtitles'),
+            ], id='map-subtitles'),
+            
+            html.Div([
+                dash_table.DataTable(
+                    id='state-table-subtitles',
+                    columns=[
+                        {"name": "Inicial del Estado", "id": "Estado"},
+                        {"name": "Nombre Completo", "id": "Nombre Completo"},
+                    ],
+                    data=[],
+                    row_selectable='single',  # Permitir seleccionar una fila
+                    selected_rows=[],  # Para manejar las filas seleccionadas
+                    style_table={'overflowX': 'auto', 'height': '350px', 'overflowY': 'auto'},
+                    style_cell={'textAlign': 'center'},
+                ),
+                html.Div(id='team-detail', style={'padding-top': '20px'}),
+            ], id='table-map-subtitles'),
+        ], id='content-map-subtitles'),
+
         # Título y gráfico del globo terráqueo
         html.H1("Recorrido Por El Mundo Con Las Yardas Por Carrera Totales"),
         html.Div([
@@ -504,12 +491,54 @@ app.layout = html.Div([
                     {"name": "Yardas faltantes para el siguiente destino", "id": "Yardas faltantes para el siguiente destino"}
                 ],
                 data=[],
-
                 style_cell={'textAlign': 'center', 'whiteSpace': 'normal', 'height': 'auto'},
             ),
         ], style={'display': 'flex', 'justify-content': 'space-between', 'align-items': 'flex-start'}),
-    
-])
+
+
+        # Mostrar tabla de eficiencia
+        html.H1("Jugadores Más Eficientes Por Estadística"),
+        html.Div([
+            dcc.Dropdown(
+                id='stat-type-efficiency',
+                options=[
+                    {'label': 'Passing', 'value': 'passing'},
+                    {'label': 'Rushing', 'value': 'rushing'},
+                    {'label': 'Receiving', 'value': 'receiving'}
+                ],
+                value='passing'
+            ),
+            dcc.Dropdown(
+                id='year-filter-efficiency',
+                placeholder='Select a Year',
+            ),
+        ]),
+
+        dash_table.DataTable(
+            id='top-10-table-efficiency',
+            columns=[
+                {"name": "Name", "id": "Name"},
+                {"name": "Team", "id": "Team"},
+                {"name": "ATT", "id": "ATT"},
+                {"name": "Touchdowns", "id": "Touchdowns"},
+                {"name": "Attempts Per TD", "id": "Attempts_Per_TD"}
+            ],
+            data=[],
+            style_table={'overflowX': 'auto', 'padding-bottom': '25px'},
+            style_cell={
+                'textAlign': 'center',
+                'padding-bottom': '5px',
+                'whiteSpace': 'normal',
+            },
+            page_size=10
+        ),
+
+    ], style={'width': '90%', 'margin': '0 auto', 'padding': '20px'}),  # Centro de la columna principal
+
+    # Margen lado derecho
+    html.Div(style={'backgroundColor': '#013369', 'width': '5%', 'height': '100vh', 'position': 'fixed', 'right': 0}),
+], style={'display': 'flex'})
+
 
 # --------------------------------------------------------------------------------------------------------------------
 # Llamados para que muestre las tablas y funcionen los filtros
@@ -554,7 +583,7 @@ def update_bar_charts(selected_year):
         data_passing, 
         x='Position', 
         y='Count',
-        title=f'Estadísticas de pases por posición-{selected_year if selected_year else "All Years"}',
+        title=f'Pases por posición-{selected_year if selected_year else "All Years"}',
         color='Position',
         color_discrete_map=color_discrete_map
     )
@@ -563,7 +592,7 @@ def update_bar_charts(selected_year):
         data_rushing, 
         x='Position', 
         y='Count',
-        title=f'Estadísticas de carreras por posición-{selected_year if selected_year else "All Years"}',
+        title=f'Carreras por posición-{selected_year if selected_year else "All Years"}',
         color='Position',
         color_discrete_map=color_discrete_map
     )
@@ -572,7 +601,7 @@ def update_bar_charts(selected_year):
         data_receiving, 
         x='Position', 
         y='Count',
-        title=f'Estadísticas de recepción por posición-{selected_year if selected_year else "All Years"}',
+        title=f'Recepción por posición-{selected_year if selected_year else "All Years"}',
         color='Position',
         color_discrete_map=color_discrete_map
     )
@@ -589,7 +618,7 @@ def update_bar_charts(selected_year):
 def update_year_filter_options_top(selected_type):
     if selected_type == 'passing':
         df = get_data(query_passing_top)
-    elif selected_type == 'rushing': 
+    elif selected_type == 'rushing':
         df = get_data(query_rushing_top)
     else:
         df = get_data(query_receiving_top)
